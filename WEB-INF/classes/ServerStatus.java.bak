@@ -1,0 +1,84 @@
+
+package Server;
+import java.sql.*;
+
+
+public class  ServerStatus
+{
+	public static void count(int i)
+	{
+
+		//System.out.println("count"+i);
+		if(i==1||i==4||i==7)
+		{
+			insert(i, "Idle");
+		}
+		else if(i==2||i==5||i==8)
+		{
+			insert(i, "Normal");
+		}
+		else
+		{
+			insert(i, "Overloaded");
+		}
+	}
+	public static void insert(int t, String s)
+	{
+		//System.out.println("GNG TO INSERT!"+t+" && "+s);
+		try{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/loadbal","root","root");
+		Statement st=con.createStatement();
+		int o=st.executeUpdate("insert into server_status(no, status) values("+t+", '"+s+"')");
+		if(o>0)
+		{
+			System.out.println("inserted1");
+		}
+		}
+		catch(Exception e){System.out.println(e);}
+
+	}
+	public static void setC(int i)
+	{
+
+		//System.out.println("count"+i);
+		if(i==1||i==2||i==3)
+		{
+			insert2(i, "Cloud1");
+		}
+		else if(i==4||i==5||i==6)
+		{
+			insert2(i, "Cloud2");
+		}
+		else
+		{
+			insert2(i, "Cloud3");
+		}
+	}
+
+		public static void insert2(int t, String s)
+		{
+		//System.out.println("GNG TO INSERT!"+t+" && "+s);
+		try{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/loadbal","root","root");
+		Statement st=con.createStatement();
+		int o=st.executeUpdate("update server_status set server='"+s+"' where no="+t+"");
+		if(o>0)
+		{
+			System.out.println("inserted1");
+		}
+		}
+		catch(Exception e){System.out.println(e);}
+
+	}
+
+
+	public static void main(String[] args) 
+	{
+		count(1);
+		setC(1);
+		
+		
+	}
+}
